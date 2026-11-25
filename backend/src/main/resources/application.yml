@@ -1,0 +1,86 @@
+spring:
+  application:
+    name: crop-insurance-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/crop_insurance}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+          lob:
+            non_contextual_creation: true
+        format_sql: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 50MB
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+  task:
+    scheduling:
+      pool:
+        size: 4
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:25}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_AUTH:false}
+          starttls:
+            enable: ${MAIL_STARTTLS:false}
+server:
+  port: ${SERVER_PORT:8080}
+  forward-headers-strategy: framework
+app:
+  mail:
+    # console (default): OTP/notification emails print to the server log, as before.
+    # smtp: send real email via the spring.mail.* settings above (independent of the "prod" profile,
+    # so switching this on doesn't also activate the other prod-only integrations).
+    mode: ${MAIL_MODE:console}
+  kafka:
+    enabled: ${KAFKA_ENABLED:false}
+  jwt:
+    secret: ${JWT_SECRET:change-me-to-a-minimum-32-byte-secret-key-please}
+    refresh-days: 30
+  encryption:
+    secret: ${AES_SECRET:change-me-to-a-32-byte-aes-key!!}
+  cors-origins: ${CORS_ORIGINS:http://localhost:8081,http://172.28.224.1:8081}
+  upload-dir: ${UPLOAD_DIR:./uploads}
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  messaging:
+    relay-enabled: ${MESSAGE_RELAY_ENABLED:false}
+    relay-host: ${MESSAGE_RELAY_HOST:localhost}
+    relay-port: ${MESSAGE_RELAY_PORT:61613}
+  operational-hours:
+    enabled: ${OPERATIONAL_HOURS_ENABLED:false}
+    start: ${OPERATIONAL_HOURS_START:08:00}
+    end: ${OPERATIONAL_HOURS_END:20:00}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+logging:
+  level:
+    com.examly.springapp: INFO

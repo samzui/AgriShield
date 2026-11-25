@@ -1,0 +1,14 @@
+{
+  "family": "crop-insurance-backend",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "containerDefinitions": [{
+    "name": "backend",
+    "image": "YOUR_ACCOUNT.dkr.ecr.YOUR_REGION.amazonaws.com/crop-insurance-backend:latest",
+    "portMappings": [{"containerPort": 8080,"protocol": "tcp"}],
+    "essential": true,
+    "healthCheck": {"command": ["CMD-SHELL","wget -qO- http://localhost:8080/actuator/health || exit 1"]}
+  }]
+}
